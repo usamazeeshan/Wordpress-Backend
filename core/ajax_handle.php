@@ -39,46 +39,50 @@ add_action('wp_ajax_nopriv_roadcube_register_new_user','roadcube_register_new_us
 function roadcube_register_new_user_callback(){
     if(isset($_POST['dataset'])){
         $data = $_POST['dataset'];
-        $username = $data['username'];
-        $roadcube_email = $data['roadcube_email'];
+        $username = isset($data['username']) && !isset($data['user_exists']) ? $data['username'] : "";
+        $roadcube_email = isset($data['roadcube_email']) && !isset($data['user_exists']) ? $data['roadcube_email'] : "";
         $country_id = $data['country_id'];
         $user_reg_id = $data['user_reg_id'];
         $mobile = $data['mobile'];
         $gender = $data['gender'];
-        $pass = $data['pass'];
-        $con_pass = $data['con_pass'];
         $dob = $data['dob'];
-        $user_exists = get_user_by( 'login', $username );
-        if( $user_exists ) {
-            echo json_encode([
-                'status' => 'error',
-                'message' => __('Username already exists','roadcube')
+        $pass = isset($data['pass']) && !isset($data['user_exists']) ? $data['pass'] : "";
+        $con_pass = isset($data['con_pass']) && !isset($data['user_exists']) ? $data['con_pass'] : "";
+        if( !isset($data['user_exists']) ){
+            $user_exists = get_user_by( 'login', $username );
+            if( $user_exists ) {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => __('Username already exists','roadcube')
+                ]);
+                exit;
+            }
+            
+            $user_reg_data = roadcube_user_register( [
+                'user_registration_identifier' => $user_reg_id,
+                'gender' => $gender,
+                'password' => $pass,
+                'password_confirmation' => $con_pass,
+                'birthday' => $dob,
+                "marketing" => true
             ]);
-            exit;
         }
-        
-        $user_reg_data = roadcube_user_register( [
-            'user_registration_identifier' => $user_reg_id,
-            'gender' => $gender,
-            'password' => $pass,
-            'password_confirmation' => $con_pass,
-            'birthday' => $dob,
-            "marketing" => true
-        ]);
         if( isset($user_reg_data['status']) && $user_reg_data['status'] == "error" ) {
             echo json_encode( $user_reg_data );
             exit;
         }
-        $userdata = [
-            'user_login' => $username,
-            'user_pass' => $pass,
-            'user_email' => $roadcube_email
-        ];
-        $user_id = wp_insert_user( $userdata );
-        update_user_meta( $user_id, 'roadcube_gender', $gender );
-        update_user_meta( $user_id, 'roadcube_birthday', $dob );
-        update_user_meta( $user_id, 'roadcube_mobile', $mobile );
-        update_user_meta( $user_id, 'roadcube_country_id', $country_id );
+        if( !isset($data['user_exists']) ) {
+            $userdata = [
+                'user_login' => $username,
+                'user_pass' => $pass,
+                'user_email' => $roadcube_email
+            ];
+            $user_id = wp_insert_user( $userdata );
+            update_user_meta( $user_id, 'roadcube_gender', $gender );
+            update_user_meta( $user_id, 'roadcube_birthday', $dob );
+            update_user_meta( $user_id, 'roadcube_mobile', $mobile );
+            update_user_meta( $user_id, 'roadcube_country_id', $country_id );
+        }
         echo json_encode([
             'status' => 'success',
             'roadcube_gender' => $gender,

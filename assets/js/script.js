@@ -227,6 +227,7 @@ $(document).ready(() => {
     $('#roadcube-register-btn').on('click', e => {
         e.preventDefault()
         let this_el = $(e.currentTarget)
+        let user_exists = this_el.attr('data-user-existing')
         let user_reg_id = $('#user_reg_id').val()
         let this_el_html = this_el.html()
         let username = $('#roadcube_username').val()
@@ -248,11 +249,11 @@ $(document).ready(() => {
             roadcube_validator_msg("Phone number is not verified.")
             return false
         }
-        if( username == '' ) {
+        if( username == '' && !user_exists ) {
             roadcube_validator_msg("Username is required.")
             return false
         }
-        if( roadcube_email == '' ) {
+        if( roadcube_email == '' && !user_exists ) {
             roadcube_validator_msg("Email is required.")
             return false
         }
@@ -272,11 +273,11 @@ $(document).ready(() => {
             roadcube_validator_msg("Gender is required.")
             return false
         }
-        if( !pass ) {
+        if( !pass && !user_exists ) {
             roadcube_validator_msg("Password is required.")
             return false
         }
-        if( !con_pass ) {
+        if( !con_pass && !user_exists ) {
             roadcube_validator_msg("Confirm password is required.")
             return false
         }
@@ -298,6 +299,16 @@ $(document).ready(() => {
             pass,
             con_pass,
             dob
+        }
+        if( user_exists ) {
+            dataset = {
+                country_id,
+                user_reg_id,
+                mobile,
+                gender,
+                dob,
+                user_exists
+            }
         }
         this_el.html(`<i class="fa fa-refresh fa-spin"></i> ${this_el_html}`)
         $.ajax({

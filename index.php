@@ -30,6 +30,8 @@ if( !class_exists( 'Coupon_Claimer') ) {
             add_action('admin_menu',[$this,'roadcube_settings']);
             // user form shortcode
             add_shortcode('roadcube_user_register_form',[$this,'roadcube_user_register_form']);
+            // existing user form shortcode
+            add_shortcode('roadcube_existing_user_register_form',[$this,'roadcube_existing_user_register_form']);
             // get user point shortcode
             add_shortcode('roadcube_get_user_points',[$this,'roadcube_get_user_points_callback']);
             // get user show gifts
@@ -68,6 +70,11 @@ if( !class_exists( 'Coupon_Claimer') ) {
         function roadcube_user_register_form(){
             ob_start();
             include(ROADCUBE_PATH.'templates/register-template.php');
+            return ob_get_clean();
+        }
+        function roadcube_existing_user_register_form(){
+            ob_start();
+            include(ROADCUBE_PATH.'templates/register-to-server-template.php');
             return ob_get_clean();
         }
         function roadcube_settings(){
