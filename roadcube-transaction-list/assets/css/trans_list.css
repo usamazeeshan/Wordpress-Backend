@@ -1,0 +1,59 @@
+.roadcube-trans-list-container ul{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+.roadcube-trans-list-container img{
+    height: 28px!important;
+}
+.roadcube-trans-list-container tr{
+    padding: 8px;
+    background: white!important;
+    color: black;
+    margin-top: 8px;
+    font-size: 18px;
+    border-bottom: 1px solid black;
+    /* display: flex; */
+}
+.roadcube-trans-list-container tr:hover{
+    padding: 8px;
+    background: white!important;
+    color: black;
+    margin-top: 8px;
+    font-size: 18px;
+    border-bottom: 1px solid black;
+    /* display: flex; */
+}
+.roadcube-trans-list-container tr:last-child{
+    padding: 8px;
+    /* background: black; */
+    color: black;
+    margin-top: 8px;
+    font-size: 18px;
+    border-bottom: 0px solid black;
+    /* display: flex; */
+}
+.roadcube-trans-list-pagination{
+    display: flex;
+    flex-direction: row;
+    gap:16px;
+    margin-top:32px;
+    flex-wrap: wrap;
+}
+.roadcube-trans-list-pagination div:hover,
+.roadcube-a-page-active{
+    height: 30px;
+    width: 30px;
+    font-size: 18px;
+    text-align: center;
+    border: 2px solid black;
+    cursor: pointer;
+}
+.roadcube-trans-list-pagination div{
+    height: 30px;
+    width: 30px;
+    font-size: 18px;
+    text-align: center;
+    border-bottom: 2px solid black;
+    cursor: pointer;
+}
