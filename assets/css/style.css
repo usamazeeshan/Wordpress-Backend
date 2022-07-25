@@ -1,0 +1,94 @@
+.roadcube-container label{
+    font-size:18px;
+}
+.roadcube-control:not(.roadcube-control__tos){
+    display:flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+.roadcube-control__tos{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.roadcube-control__tos input{
+    margin-right: 4px;
+}
+.roadcube-control:not(.roadcube-control__tos) label{
+    margin-bottom: 8px;
+}
+.roadcube-control:not(.roadcube-control__tos) input,
+.roadcube-control:not(.roadcube-control__tos) select{
+    padding: 8px;
+}
+.roadcube-control__register button{
+    margin-top:8px;
+    padding: 8px 16px;
+    background: skyblue;
+    color:white;
+}
+/* user point */
+.roadcube-point-holder{
+    display: flex;
+}
+/* show gifts */
+.roadcube-show-gifts-container{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    border-radius: 8px;
+}
+.roadcube-gift{
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    flex-direction: row;
+    /* background-color: skyblue; */
+    border-radius: 8px;
+    align-items: center;
+}
+.roadcube-gift button{
+    padding: 8px;
+    border:0px;
+    color:white;
+    background:black;
+    cursor: pointer;
+    align-self: flex-end;
+    width:160px;
+    margin-top:16px;
+}
+.roadcube-gift button:active,
+.roadcube-gift button:focus,
+.roadcube-gift button:hover{
+    padding: 8px;
+    border:0px;
+    outline: 1px solid black!important;
+    color:black!important;
+    background:white!important;
+    cursor: pointer;
+    align-self: flex-end;
+    width:160px;
+    margin-top:16px;
+}
+.coupon-image{
+    width:20%;
+}
+.roadcube-pagination{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.coupon-details{
+    width: calc( 80% - 16px );
+}
+.coupon-details p{
+    margin-bottom: 0px;
+}
+#wp-submit,
+.swal2-confirm,
+.swal2-confirm:focus,
+.swal2-confirm:active{
+    background-color: black!important;
+    outline: 0px!important;
+    border: 0px!important;
+}
