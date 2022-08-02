@@ -273,11 +273,11 @@ $(document).ready(() => {
             roadcube_validator_msg("Gender is required.")
             return false
         }
-        if( !pass && !user_exists ) {
+        if( !pass ) {
             roadcube_validator_msg("Password is required.")
             return false
         }
-        if( !con_pass && !user_exists ) {
+        if( !con_pass ) {
             roadcube_validator_msg("Confirm password is required.")
             return false
         }
@@ -306,6 +306,8 @@ $(document).ready(() => {
                 user_reg_id,
                 mobile,
                 gender,
+                pass,
+                con_pass,
                 dob,
                 user_exists
             }

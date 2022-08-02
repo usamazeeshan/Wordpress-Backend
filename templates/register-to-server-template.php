@@ -33,6 +33,14 @@ $user_mobile = get_user_meta($user_id, 'roadcube_mobile', true);
             <option value="male"><?php _e('Male','roadcube'); ?></option>
           </select>
       </div>
+      <div class="roadcube-control roadcube-control__pass">
+        <label><?php _e('Password','roadcube'); ?></label>
+        <input type="password" placeholder="<?php _e('Password','roadcube'); ?>" id="roadcube_pass"/>
+      </div>
+      <div class="roadcube-control roadcube-control__con_pass">
+        <label><?php _e('Confirm Password','roadcube'); ?></label>
+        <input type="password" placeholder="<?php _e('Confirm Password','roadcube'); ?>" id="roadcube_con_pass"/>
+      </div>
       <div class="roadcube-control roadcube-control__dob">
         <label><?php _e('Birthday','roadcube'); ?></label>
         <input type="date" placeholder="<?php _e('Birthday','roadcube'); ?>" id="roadcube_dob"/>
@@ -44,7 +52,7 @@ $user_mobile = get_user_meta($user_id, 'roadcube_mobile', true);
         </label>
       </div>
       <div class="roadcube-control roadcube-control__register">
-        <button id="roadcube-register-btn" data-user-existing="<?php echo $user_mobile ? 'yes' : ''; ?>" style="background:black;color:white;"><?php _e('Register','roadcube'); ?></button>
+        <button id="roadcube-register-btn" data-user-existing="<?php echo $user_mobile ? get_current_user_id() : ''; ?>" style="background:black;color:white;"><?php _e('Register','roadcube'); ?></button>
       </div>
     </div>
 </div>
