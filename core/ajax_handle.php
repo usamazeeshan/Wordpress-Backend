@@ -53,7 +53,8 @@ function roadcube_register_new_user_callback(){
             if( $user_exists ) {
                 echo json_encode([
                     'status' => 'error',
-                    'message' => __('Username already exists','roadcube')
+                    'message' => __('Username already exists','roadcube'),
+                    'data' => $data
                 ]);
                 exit;
             }
@@ -80,18 +81,19 @@ function roadcube_register_new_user_callback(){
             $user_id = wp_insert_user( $userdata );
             update_user_meta( $user_id, 'roadcube_gender', $gender );
             update_user_meta( $user_id, 'roadcube_birthday', $dob );
-            update_user_meta( $user_id, 'roadcube_mobile', $roadcube_mobile );
+            update_user_meta( $user_id, 'roadcube_mobile', $mobile );
             update_user_meta( $user_id, 'roadcube_country_id', $country_id );
         } else {
             $user_id = $data['user_exists'];
-            update_user_meta( $user_id, 'roadcube_mobile', $roadcube_mobile );
+            update_user_meta( $user_id, 'roadcube_mobile', $mobile );
         }
         echo json_encode([
             'status' => 'success',
             'roadcube_gender' => $gender,
             'roadcube_birthday' => $dob,
             'roadcube_mobile' => $mobile,
-            'roadcube_country_id' => $country_id
+            'roadcube_country_id' => $country_id,
+            'data' => $data
         ]);
         exit;
     }

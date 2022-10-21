@@ -5,7 +5,7 @@
           <input type="text" value="" id="roadcube_username" placeholder="Username"/>
       </div>
       <div class="roadcube-control roadcube-control__username">
-          <label><?php _e('Username','roadcube'); ?></label>
+          <label><?php _e('Email','roadcube'); ?></label>
           <input type="text" value="" id="roadcube_email" placeholder="Email"/>
       </div>
       <div class="roadcube-control roadcube-control__select">

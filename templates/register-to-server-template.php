@@ -52,7 +52,7 @@ $user_mobile = get_user_meta($user_id, 'roadcube_mobile', true);
         </label>
       </div>
       <div class="roadcube-control roadcube-control__register">
-        <button id="roadcube-register-btn" data-user-existing="<?php echo $user_mobile ? get_current_user_id() : ''; ?>" style="background:black;color:white;"><?php _e('Register','roadcube'); ?></button>
+        <button id="roadcube-register-btn" data-user-existing="<?php echo !$user_mobile ? get_current_user_id() : ''; ?>" style="background:black;color:white;"><?php _e('Register','roadcube'); ?></button>
       </div>
     </div>
 </div>

@@ -58,6 +58,7 @@ function roadcube_user_register_init(array $user_data){
         if( $data['status'] == "success" ) {
             $user_data['user_reg_id'] = $data['data']['user']['user_registration_identifier'];
             $user_data['status'] = "success";
+            $user_data['data'] = $data;
             return $user_data;
         } else {
             $data['stage'] = "initial_registration";

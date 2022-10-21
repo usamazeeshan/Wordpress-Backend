@@ -329,7 +329,7 @@ $(document).ready(() => {
                     })
                 } else if ( resp.status && resp.status == "success" ) {
                     console.log(roadcube.login_url)
-                    window.location.href = roadcube.login_url
+                    // window.location.href = roadcube.login_url
                 }
                 console.log(resp)
                 this_el.html(this_el_html)
