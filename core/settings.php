@@ -13,6 +13,10 @@ if(isset($_POST['save_settings'])){
             <td><input required placeholder="<?php _e('API Key','roadcube'); ?>" type="text" value="<?php echo Coupon_Claimer::roadcube_get_setting('api_key'); ?>" name="api_key"/></td>
         </tr>
         <tr>
+            <th><?php _e('Store ID','roadcube'); ?></th>
+            <td><input required placeholder="<?php _e('Store ID','roadcube'); ?>" type="text" value="<?php echo Coupon_Claimer::roadcube_get_setting('store_id'); ?>" name="store_id"/></td>
+        </tr>
+        <tr>
             <th><?php _e('Login page URL','roadcube'); ?></th>
             <td><input required placeholder="<?php _e('Login page URL','roadcube'); ?>"  type="url" value="<?php echo Coupon_Claimer::roadcube_get_setting('login_page'); ?>" name="login_page"/></td>
         </tr>
@@ -26,7 +30,7 @@ if(isset($_POST['save_settings'])){
     </form>
 </table>
 <?php
-update_user_meta(1,'roadcube_mobile','1737008004');
+// update_user_meta(1,'roadcube_mobile','1737008004');
 // $countries = get_option('roadcube_country_data');
 // echo '<pre>';
 // print_r($countries);
