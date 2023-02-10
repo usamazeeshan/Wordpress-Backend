@@ -30,11 +30,11 @@ if(isset($_POST['save_settings'])){
     </form>
 </table>
 <?php
-// update_user_meta(1,'roadcube_mobile','1737008004');
-// $countries = get_option('roadcube_country_data');
-echo 'test';
-$claimed_coupons = get_user_meta(get_current_user_id(),'roadcube_claimed_coupons',true);
-// krsort($claimed_coupons);
-echo '<pre>';
-print_r(end($claimed_coupons));
-echo '</pre>';
+// // update_user_meta(1,'roadcube_mobile','1737008004');
+// // $countries = get_option('roadcube_country_data');
+// $claimed_coupons = get_user_meta(get_current_user_id(),'roadcube_claimed_coupons',true);
+// // $claimed_coupons = [];
+// // krsort($claimed_coupons);
+// echo '<pre>';
+// print_r(end($claimed_coupons));
+// echo '</pre>';

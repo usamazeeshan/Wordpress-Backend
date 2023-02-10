@@ -23,3 +23,27 @@ function roadcube_woocommerce_callback(){
     <button type="button" id="roadcube-show-coupons" style="margin-bottom:16px;"><?php _e('Apply roadcube coupons','roadcube'); ?></button>
     <?php
 }
+add_action('woocommerce_before_calculate_totals','roadcube_apply_the_discount');
+function roadcube_apply_the_discount( $cart ){
+    if ( is_admin() && ! defined( 'DOING_AJAX' ) ) return;
+    $user_id = get_current_user_id();
+    if( !$user_id || WC()->cart->get_cart_contents_count() == 0 ) return;
+    $user_claimed_coupon = get_user_meta($user_id,'roadcube_claimed_coupons',true);
+    $claimed_coupon = end($user_claimed_coupon);
+    if( empty($claimed_coupon) || isset($claimed_coupon['redeemed'])) return;
+    $cost = floatval($claimed_coupon['cost']);
+    $cart->add_fee('Discount',-1 * $cost);
+}
+add_action('woocommerce_thankyou','roadcube_add_the_user_coupon_redeemed');
+function roadcube_add_the_user_coupon_redeemed( $order_id ){
+    $user_id = get_current_user_id();
+    if( !$user_id ) return;
+    $user_claimed_coupon = get_user_meta($user_id,'roadcube_claimed_coupons',true);
+    $claimed_coupon = end($user_claimed_coupon);
+    $key = key($user_claimed_coupon);
+    if( $claimed_coupon && !isset($claimed_coupon['redeemed'])){
+        $claimed_coupon['redeemed'] = true;
+        $user_claimed_coupon[$key] = $claimed_coupon;
+        update_user_meta($user_id,'roadcube_claimed_coupons',$user_claimed_coupon);
+    }
+}
