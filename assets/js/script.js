@@ -16,6 +16,12 @@ $(document).ready(() => {
             "user": roadcube.user_mobile,
             "coupon_id": coupon_id
         }
+        if( this_el.attr('data-popup-claim') ) {
+            let checkout_claim = true
+            let title = this_el.attr('data-coupon-title')
+            let cost = this_el.attr('data-coupon-cost')
+            dataset = {...dataset, checkout_claim, title, cost }
+        }
         $.ajax({
             url: roadcube.ajax_url,
             dataType: "json",
@@ -25,16 +31,17 @@ $(document).ready(() => {
                 dataset: dataset
             },
             success: resp => {
+                console.log(resp)
                 if( resp.status && resp.status == "error" ) {
                     Swal.fire({
                         icon: "error",
                         text: resp.message
                     })
                 } else if ( resp.status && resp.status == "success" ) {
-                    
+                    let title = resp.data != undefined ? resp.data.title : resp.title
                     Swal.fire({
                         icon: "success",
-                        text: `${resp.data.title} is yours.`
+                        text: `${title} is yours.`
 
                     }).then( response => {
                         console.log(response)

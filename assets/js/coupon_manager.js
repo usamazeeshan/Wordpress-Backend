@@ -3,7 +3,7 @@ jQuery(document).ready(function($){
     $('#roadcube-show-coupons').on('click',function(e){
         e.preventDefault()
         coupon_popup = Swal.fire({
-            icon: "info",
+            // icon: "info",
             title: "Select a coupon to apply",
             html: '<div class="roadcube-show-gifts-container">' + 
                 '<div class="roadcube-pagination">' +
@@ -41,7 +41,7 @@ jQuery(document).ready(function($){
                             <p>Points: ${gift_data.points}</p>
                             <p>Product code: ${gift_data.product_code}</p>
                             <p>${gift_data.description}</p>
-                            <button data-coupon-id="${gift_data.coupon_id}" class="roadcube-claim-coupon">Claim coupon</button>
+                            <button data-coupon-cost="${gift_data.cost}" data-popup-claim="true" data-coupon-title="${gift_data.title}" data-coupon-id="${gift_data.coupon_id}" class="roadcube-claim-coupon">Claim coupon</button>
                         </div>
                     </div>
                 `
@@ -124,17 +124,17 @@ jQuery(document).ready(function($){
                     $('.roadcube-gifts-holder').html(all_gifts)
                     // next page
                     if( resp.data.pagination.next_page ) {
-                        $('#roadcube_next').show();
-                        $('#roadcube_next').attr('data-page',resp.data.pagination.next_page)
+                        $('#roadcube_next_popup').show();
+                        $('#roadcube_next_popup').attr('data-page',resp.data.pagination.next_page)
                     } else {
                         $('#roadcube_next').show();
                     }
                     // previous page
                     if( resp.data.pagination.previous_page ) {
-                        $('#roadcube_prev').show();
-                        $('#roadcube_prev').attr('data-page',resp.data.pagination.previous_page)
+                        $('#roadcube_prev_popup').show();
+                        $('#roadcube_prev_popup').attr('data-page',resp.data.pagination.previous_page)
                     } else {
-                        $('#roadcube_prev').show();
+                        $('#roadcube_prev_popup').show();
                     }
                     
                 }

@@ -103,7 +103,37 @@ add_action('wp_ajax_roadcube_coupon_claim','roadcube_coupon_claim_callback');
 function roadcube_coupon_claim_callback(){
     if(isset($_POST['dataset'])){
         $data = $_POST['dataset'];
-        $data = roadcube_coupon_claim($data['user'],$data['coupon_id']);
+        $request = $_POST['dataset'];
+        if( isset($data['checkout_claim']) ) {
+            $coupon_data = roadcube_coupon_claim($data['user'],$data['coupon_id']);
+            if( !isset($coupon_data['status']) || $coupon_data['status'] != 'success' ){
+                echo json_encode($coupon_data);
+                exit;
+            }
+            $title = $data['title'];
+            $cost = $data['cost'];
+            $data = roadcube_user_coupon_claim($data['user']);
+            $data = $data['data']['user_gifts'];
+            foreach($data as $a_voucher){
+                if( $a_voucher['title'] == $title ) {
+                    $data = array(
+                        'status' => 'success',
+                        'title' => $title,
+                        'is_voucer' => true,
+                        'cost' => $cost,
+                        'voucher' => $a_voucher['voucher']
+                    );
+                    $claimed_coupons = get_user_meta(get_current_user_id(),'roadcube_claimed_coupons',true) ?: [];
+                    $claimed_coupons[] = $data;
+                    update_user_meta( get_current_user_id(), 'roadcube_claimed_coupons', $claimed_coupons );
+                    echo json_encode($data);
+                    exit;
+                }
+            }
+            // WC()->session->add_item();
+        } else {
+            $data = roadcube_coupon_claim($data['user'],$data['coupon_id']);
+        }
         echo json_encode($data);
         exit;
     }

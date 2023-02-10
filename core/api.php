@@ -201,6 +201,41 @@ function roadcube_coupon_claim( $user_mobile, $coupon_id ){
         return $data;
     }
 }
+function roadcube_user_coupon_claim( $user_mobile ){
+    $curl = curl_init();
+    $api_key = Coupon_Claimer::roadcube_get_setting('api_key');
+    $dataset = [
+        "user" => $user_mobile,
+        // "coupon_id" => $coupon_id
+    ];
+    curl_setopt_array($curl, array(
+    CURLOPT_URL => 'https://api.roadcube.io/v1/p/users/user-coupon-claims?page=1',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'POST',
+    CURLOPT_POSTFIELDS => json_encode($dataset),
+    CURLOPT_HTTPHEADER => array(
+        "X-API-TOKEN: {$api_key}",
+        'Content-Type: application/json'
+    ),
+    ));
+
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+    if ($err) {
+        echo "cURL Error #:" . $err;
+    } else {
+        $data = json_decode( $response, true);
+        $data['dataset'] = $dataset;
+        return $data;
+    }
+}
 
 function roadcube_checkout_new_transaction_call($user, $amount){
     $curl = curl_init();
