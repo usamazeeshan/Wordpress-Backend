@@ -53,6 +53,7 @@ if( !class_exists( 'Coupon_Claimer') ) {
             wp_enqueue_script('jquery');
             wp_enqueue_script('roadcube_swal2', '//cdn.jsdelivr.net/npm/sweetalert2@11');
             wp_enqueue_script('roadcube_script', ROADCUBE_URL.'assets/js/script.js',array(), $version);
+            wp_enqueue_script('roadcube_coupon_manager_script', ROADCUBE_URL.'assets/js/coupon_manager.js',array(), $version);
             wp_enqueue_script('roadcube_localize', ROADCUBE_URL.'assets/js/localize.js');
             $localize_data =  array(
                 'ajax_url' => admin_url('admin-ajax.php'),
@@ -60,10 +61,14 @@ if( !class_exists( 'Coupon_Claimer') ) {
             );
             if( get_current_user_id() ) {
                 $user_id = get_current_user_id();
+                $user_data = get_userdata( $user_id );
+                $user_email = $user_data->user_email;
                 $user_mobile = get_user_meta( $user_id, 'roadcube_mobile', true );
+                $user_mobile = $user_data->user_email;
                 if( $user_mobile) {
                     $localize_data['user_mobile'] = $user_mobile;
                 }
+                $localize_data['coupon_data'] = roadcube_get_user_available_coupons( 1, $user_email );
             }
             wp_localize_script('roadcube_localize', 'roadcube', $localize_data);
         }
@@ -131,7 +136,8 @@ if( !class_exists( 'Coupon_Claimer') ) {
 add_action( 'login_init', 'myplugin_add_login_fields' );
  
 function myplugin_add_login_fields() {
-    $user_name = $_POST['log'];
+    $user_name = isset($_POST['log']) ? $_PSOT['log'] : false;
+    if( !$user_name ) return;
     global $wpdb;
     $table = $wpdb->prefix.'usermeta';
     $results = $wpdb->get_results("SELECT * FROM $table WHERE meta_value='$user_name'",ARRAY_A);

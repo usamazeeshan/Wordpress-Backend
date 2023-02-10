@@ -120,3 +120,15 @@ function roadcube_get_available_coupons_callback(){
     }
     exit;
 }
+add_action('wp_ajax_roadcube_get_user_available_coupons','roadcube_get_user_available_coupons_callback');
+function roadcube_get_user_available_coupons_callback(){
+    if(isset($_POST['dataset'])){
+        $data = $_POST['dataset'];
+        $page = $data['page'];
+        $user_email = $data['user_email'];
+        $data = roadcube_get_user_available_coupons( $page, $user_email );
+        echo json_encode($data);
+        exit;
+    }
+    exit;
+}
