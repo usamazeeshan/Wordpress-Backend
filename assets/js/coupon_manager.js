@@ -6,13 +6,13 @@ jQuery(document).ready(function($){
             // icon: "info",
             title: "Select a coupon to apply",
             html: '<div class="roadcube-show-gifts-container">' + 
-                '<div class="roadcube-pagination">' +
-                    '<button id="roadcube_prev_popup">Previous</button>' +
-                    '<button id="roadcube_next_popup">Next</button>' +
-                '</div>' +
-                '<div class="roadcube-gifts-holder" style="height: 300px;overflow-y:scroll;">' +
+                    '<div class="roadcube-gifts-holder" style="height: 300px;overflow-y:scroll;">' +
                     
-                '</div>' +
+                    '</div><br>' +
+                    '<div class="roadcube-pagination">' +
+                        '<button id="roadcube_prev_popup">Previous</button>' +
+                        '<button id="roadcube_next_popup">Next</button>' +
+                    '</div>' +
             '</div>',
             allowOutsideClick: false,
             showCancelButton: true,
@@ -32,15 +32,15 @@ jQuery(document).ready(function($){
             for( let i = 0; i < resp.data.coupons.length; i++ ) {
                 let gift_data = resp.data.coupons[i]
                 let a_gift_ = `
-                    <div class="roadcube-gift">
+                    <div class="roadcube-gift" style="align-items:flex-start;">
                         <div class="coupon-image">
                             <img src="${gift_data.image}" alt="coupon image">
                         </div>
-                        <div class="coupon-details">
-                            <h2>${gift_data.title}</h2>
+                        <div style="text-align:left;" class="coupon-details">
+                            <h2 style="font-size:24px;">${gift_data.title}</h2>
                             <p>Points: ${gift_data.points}</p>
-                            <p>Product code: ${gift_data.product_code}</p>
-                            <p>${gift_data.description}</p>
+                            <!--p>Product code: ${gift_data.product_code}</p-->
+                            <!--p>${gift_data.description}</p-->
                             <button data-coupon-cost="${gift_data.cost}" data-popup-claim="true" data-coupon-title="${gift_data.title}" data-coupon-id="${gift_data.coupon_id}" class="roadcube-claim-coupon">Claim coupon</button>
                         </div>
                     </div>
