@@ -136,7 +136,7 @@ if( !class_exists( 'Coupon_Claimer') ) {
 add_action( 'login_init', 'myplugin_add_login_fields' );
  
 function myplugin_add_login_fields() {
-    $user_name = isset($_POST['log']) ? $_PSOT['log'] : false;
+    $user_name = isset($_POST['log']) ? $_POST['log'] : false;
     if( !$user_name ) return;
     global $wpdb;
     $table = $wpdb->prefix.'usermeta';

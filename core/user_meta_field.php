@@ -32,3 +32,8 @@ function save_roadcube_user_profile_fields( $user_id ) {
     }
     update_user_meta( $user_id, 'roadcube_mobile', $_POST['roadcube_phone'] );
 }
+add_action('user_register','roadcube_wp_insert_user',10,2);
+function roadcube_wp_insert_user($user_id, $user_data){
+    $email = $user_data->user_email;
+    roadcube_create_user_by_email($email);
+}
