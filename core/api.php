@@ -306,7 +306,7 @@ function roadcube_create_user_by_email($email){
     $curl = curl_init();
     $api_key = Coupon_Claimer::roadcube_get_setting('api_key');
     if( !$email ) return;
-    $password = mt_rand(100000,999999);
+    $password = (string) mt_rand(100000,999999);
     $dataset = array(
         'email'     => $email,
         'gender'    => 'male',
