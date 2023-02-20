@@ -20,7 +20,7 @@ function roadcube_after_checkout_transaction( $order_id ){
 add_action('woocommerce_checkout_before_order_review','roadcube_woocommerce_callback');
 function roadcube_woocommerce_callback(){
     ?>
-    <button type="button" id="roadcube-show-coupons" style="margin-bottom:16px;"><?php _e('Apply roadcube coupons','roadcube'); ?></button>
+    <button type="button" id="roadcube-show-coupons" style="margin-bottom:16px;"><?php _e('Apply loyalty coupon','roadcube'); ?></button>
     <?php
 }
 add_action('woocommerce_before_calculate_totals','roadcube_apply_the_discount');
