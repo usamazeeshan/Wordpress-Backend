@@ -4,9 +4,21 @@ if(isset($_POST['save_settings'])){
     roadcube_get_countries();
     printf('<div class="notice notice-success is-dismissible"><p>%s</p></div>',__("Save settings",'roadcube'));
 }
+if( isset($_POST['roadcube_sync_users']) ) {
+    roadcube_sync_all_prev_users();
+    printf('<div class="notice notice-success is-dismissible"><p>%s</p></div>',__("Users are being synced.",'roadcube'));
+}
 ?>
 <h1><?php _e('Coupon claim settings','roadcube'); ?></h1>
 <table class="form-table">
+    <tr>
+        <th><?php _e('Sync users manually','roadcube'); ?></th>
+        <td>
+            <form method="post">
+                <input type="submit" value="Sync users" name="roadcube_sync_users" class="button button-primary"/>
+            </form>
+        </td>
+    </tr>
     <form method="post">
         <tr>
             <th><?php _e('API Key','roadcube'); ?></th>

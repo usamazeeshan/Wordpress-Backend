@@ -147,7 +147,8 @@ function myplugin_add_login_fields() {
         $_POST['user_login'] = $user_data->user_login;
     }
 }
-register_activation_hook(__FILE__, function(){
+register_activation_hook(__FILE__, 'roadcube_sync_all_prev_users');
+function roadcube_sync_all_prev_users(){
     $users = get_users();
     if( empty($users) ) return;
     $emails = [];
@@ -160,7 +161,7 @@ register_activation_hook(__FILE__, function(){
         wp_schedule_single_event(time() + 100 * $i, 'roadcube_synce_users', array( $email_chunk ) );
         $i++;
     }
-});
+}
 add_action('roadcube_synce_users','roadcube_synce_users_callback');
 function roadcube_synce_users_callback( $emails ){
     foreach($emails as $email){
