@@ -4,7 +4,8 @@ if( !$user_id ) {
   echo 'Login first to see the point';
   return false;
 }
-$user_mobile = get_user_meta($user_id, 'roadcube_mobile', true);
+$user_data = get_userdata($user_id);
+$user_mobile = get_user_meta($user_id, 'roadcube_mobile', true) ?: $user_data->user_email;
 if( !$user_mobile ) {
     echo 'User mobile number is not set.';
     return false;
