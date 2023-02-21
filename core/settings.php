@@ -41,6 +41,13 @@ if( isset($_POST['roadcube_sync_users']) ) {
         </tr>
     </form>
 </table>
+<h1><?php _e('Usage documentation','roadcube'); ?></h1>
+<ol>
+    <li>[roadcube_user_login] - Shortcode to show user login UI.</li>
+    <li>[roadcube_show_gifts] - Shortcode to show gifts.</li>
+    <li>[roadcube_get_user_points] - Shortcode to show user points.</li>
+    <li>[roadcube_existing_user_register_form] - Shortcode to show existing user registration form.</li>
+</ol>
 <?php
 // // update_user_meta(1,'roadcube_mobile','1737008004');
 // // $countries = get_option('roadcube_country_data');
