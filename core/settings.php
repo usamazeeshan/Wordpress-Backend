@@ -43,10 +43,10 @@ if( isset($_POST['roadcube_sync_users']) ) {
 </table>
 <h1><?php _e('Usage documentation','roadcube'); ?></h1>
 <ol>
-    <li>[roadcube_user_login] - <?php _e('Shortcode to show user login UI.','roadcube'); ?></li>
-    <li>[roadcube_show_gifts] - <?php _e('Shortcode to show gifts.','roadcube'); ?></li>
-    <li>[roadcube_get_user_points] - <?php _e('Shortcode to show user points.','roadcube'); ?></li>
-    <li>[roadcube_existing_user_register_form] - <?php _e('Shortcode to show existing user registration form.','roadcube'); ?></li>
+    <li><code>[roadcube_user_login]</code> - <?php _e('Shortcode to show user login UI.','roadcube'); ?></li>
+    <li><code>[roadcube_show_gifts]</code> - <?php _e('Shortcode to show gifts.','roadcube'); ?></li>
+    <li><code>[roadcube_get_user_points]</code> - <?php _e('Shortcode to show user points.','roadcube'); ?></li>
+    <li><code>[roadcube_existing_user_register_form]</code> - <?php _e('Shortcode to show existing user registration form.','roadcube'); ?></li>
 </ol>
 <?php
 // // update_user_meta(1,'roadcube_mobile','1737008004');
