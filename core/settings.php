@@ -37,6 +37,34 @@ if( isset($_POST['roadcube_sync_users']) ) {
             <td><input required placeholder="<?php _e('Login redirect page','roadcube'); ?>"  type="url" value="<?php echo Coupon_Claimer::roadcube_get_setting('login_redirect'); ?>" name="login_redirect"/></td>
         </tr>
         <tr>
+            <th><?php _e('Point charge on order status','roadcube'); ?></th>
+            <td>
+                <select name="roadcube_point_charge_status" id="">
+                    <?php
+                    $order_statuses = wc_get_order_statuses();
+                    foreach($order_statuses as $key => $value){
+                        $selected = Coupon_Claimer::roadcube_get_setting('roadcube_point_charge_status') == str_replace('wc-','',$key) ? 'selected' : '';
+                        printf('<option %s value="%s">%s</option>',$selected,str_replace('wc-','',$key),$value);
+                    }
+                    ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th><?php _e('Point refund on order status','roadcube'); ?></th>
+            <td>
+                <select name="roadcube_point_refund_status" id="">
+                    <?php
+                    $order_statuses = wc_get_order_statuses();
+                    foreach($order_statuses as $key => $value){
+                        $selected = Coupon_Claimer::roadcube_get_setting('roadcube_point_refund_status') == str_replace('wc-','',$key) ? 'selected' : '';
+                        printf('<option %s value="%s">%s</option>',$selected,str_replace('wc-','',$key),$value);
+                    }
+                    ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
             <th><input type="submit" class="button button-primary" value="<?php _e('Save settings','roadcube'); ?>" name="save_settings"/></th>
         </tr>
     </form>
