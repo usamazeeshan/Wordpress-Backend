@@ -83,5 +83,5 @@ if( isset($_POST['roadcube_sync_users']) ) {
 // // $claimed_coupons = [];
 // // krsort($claimed_coupons);
 // echo '<pre>';
-// print_r(end($claimed_coupons));
+// print_r(get_option('roadcube_log'));
 // echo '</pre>';

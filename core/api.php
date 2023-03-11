@@ -266,6 +266,34 @@ function roadcube_checkout_new_transaction_call($user, $amount){
     curl_close($curl);
     return json_decode($response,true);
 }
+function roadcube_checkout_cancel_transaction_call($trans_id){
+    $curl = curl_init();
+    $api_key = Coupon_Claimer::roadcube_get_setting('api_key');
+    $store_id = Coupon_Claimer::roadcube_get_setting('store_id');
+    curl_setopt_array($curl, array(
+    CURLOPT_URL => "https://api.roadcube.io/v1/p/stores/{$store_id}/transactions/cancel",
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'POST',
+    CURLOPT_POSTFIELDS => json_encode(
+        array(
+            'transaction_id' => $trans_id
+        )
+    ),
+    CURLOPT_HTTPHEADER => array(
+        "X-Api-Token: {$api_key}",
+        'Content-Type: application/json'
+    ),
+    ));
+
+    $response = curl_exec($curl);
+    curl_close($curl);
+    return json_decode($response,true);
+}
 function roadcube_get_user_available_coupons( $page = 1, $user_email = false ){
     if( !$user_email ) {
         return false;
