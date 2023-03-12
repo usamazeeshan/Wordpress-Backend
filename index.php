@@ -26,6 +26,8 @@ if( !class_exists( 'Coupon_Claimer') ) {
             add_shortcode('roadcube_register',[$this,'roadcube_register_callback']);
             // enqueue
             add_action('wp_enqueue_scripts',[$this,'roadcube_enqueue']);
+            // admin enqueue
+            add_action('admin_enqueue_scripts',[$this,'roadcube_admin_enqueue']);
             // settings
             add_action('admin_menu',[$this,'roadcube_settings']);
             // user form shortcode
@@ -43,6 +45,13 @@ if( !class_exists( 'Coupon_Claimer') ) {
             ob_start();
             include(ROADCUBE_PATH.'templates/show_gifts.php');
             return ob_get_clean();
+        }
+        function roadcube_admin_enqueue(){
+            $version = rand(1,9).'.'.rand(0,9);
+            wp_enqueue_style( 'roaddcube_select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css' );
+            wp_enqueue_script( 'jquery' );
+            wp_enqueue_script('roadcube_select2_script', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js');
+            wp_enqueue_script('roadcube_script', ROADCUBE_URL.'assets/js/script.js',array(), $version);
         }
         function roadcube_enqueue(){
             $version = rand(1,9).'.'.rand(0,9);

@@ -39,7 +39,7 @@ if( isset($_POST['roadcube_sync_users']) ) {
         <tr>
             <th><?php _e('Point charge on order status','roadcube'); ?></th>
             <td>
-                <select name="roadcube_point_charge_status" id="">
+                <select name="roadcube_point_charge_status" name="roadcube_charge_point[]" id="roadcube_charge_point" multiple="multiple">
                     <?php
                     $order_statuses = wc_get_order_statuses();
                     foreach($order_statuses as $key => $value){
@@ -48,12 +48,25 @@ if( isset($_POST['roadcube_sync_users']) ) {
                     }
                     ?>
                 </select>
+                <input type="hidden" id="roadcube_charge_point_val" name="roadcube_charge_point_val" value="<?php echo Coupon_Claimer::roadcube_get_setting('roadcube_charge_point_val'); ?>"/>
+                <script>
+                    jQuery(document).ready(function($){
+                        $('#roadcube_charge_point').select2('val')
+                        let this_val = $('#roadcube_charge_point_val').val().split(',')
+                        console.log(this_val)
+                        $('#roadcube_charge_point').val(this_val)
+                        $('#roadcube_charge_point').trigger('change')
+                        $('#roadcube_charge_point').on('change.select2',function(){
+                            $('#roadcube_charge_point_val').val($('#roadcube_charge_point').val().join(','))
+                        })
+                    })
+                </script>
             </td>
         </tr>
         <tr>
             <th><?php _e('Point refund on order status','roadcube'); ?></th>
             <td>
-                <select name="roadcube_point_refund_status" id="">
+                <select name="roadcube_point_refund_status" name="roadcube_refund_point[]" id="roadcube_refund_point" multiple="multiple">
                     <?php
                     $order_statuses = wc_get_order_statuses();
                     foreach($order_statuses as $key => $value){
@@ -62,6 +75,19 @@ if( isset($_POST['roadcube_sync_users']) ) {
                     }
                     ?>
                 </select>
+                <input type="hidden" id="roadcube_refund_point_val" name="roadcube_refund_point_val" value="<?php echo Coupon_Claimer::roadcube_get_setting('roadcube_refund_point_val'); ?>"/>
+                <script>
+                    jQuery(document).ready(function($){
+                        $('#roadcube_refund_point').select2('val')
+                        let this_val = $('#roadcube_refund_point_val').val().split(',')
+                        console.log(this_val)
+                        $('#roadcube_refund_point').val(this_val)
+                        $('#roadcube_refund_point').trigger('change')
+                        $('#roadcube_refund_point').on('change.select2',function(){
+                            $('#roadcube_refund_point_val').val($('#roadcube_refund_point').val().join(','))
+                        })
+                    })
+                </script>
             </td>
         </tr>
         <tr>

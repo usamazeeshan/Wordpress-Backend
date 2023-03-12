@@ -19,6 +19,7 @@
 // }
 add_action('woocommerce_checkout_before_order_review','roadcube_woocommerce_callback');
 function roadcube_woocommerce_callback(){
+    if( is_user_logged_in() ) return;
     ?>
     <button type="button" id="roadcube-show-coupons" style="margin-bottom:16px;"><?php _e('Apply loyalty coupon','roadcube'); ?></button>
     <?php
@@ -49,8 +50,8 @@ function roadcube_add_the_user_coupon_redeemed( $order_id ){
 }
 add_action('woocommerce_order_status_changed','roadcube_trigger_charge_point',10,3);
 function roadcube_trigger_charge_point( $order_id, $old_status, $new_status ){
-    $charge_status = Coupon_Claimer::roadcube_get_setting('roadcube_point_charge_status');
-    if( $new_status != $charge_status ) return;
+    $charge_status = Coupon_Claimer::roadcube_get_setting('roadcube_charge_point_val') ?: [];
+    if( !in_array($new_status,explode(',',$charge_status)) ) return;
     $order = wc_get_order( $order_id );
     $customer_id = $order->get_customer_id();
     $email = $order->get_billing_email();
@@ -72,8 +73,8 @@ function roadcube_trigger_charge_point( $order_id, $old_status, $new_status ){
 }
 add_action('woocommerce_order_status_changed','roadcube_trigger_refund_point',10,3);
 function roadcube_trigger_refund_point( $order_id, $old_status, $new_status ){
-    $refund_status = Coupon_Claimer::roadcube_get_setting('roadcube_point_refund_status');
-    if( $new_status != $refund_status ) return;
+    $refund_status = Coupon_Claimer::roadcube_get_setting('roadcube_refund_point_val') ?: [];
+    if( !in_array($new_status,explode(',',$refund_status)) ) return;
     // $order = wc_get_order( $order_id );
     // $customer_id = $order->get_customer_id();
     // $email = $order->get_billing_email();
