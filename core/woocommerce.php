@@ -19,7 +19,7 @@
 // }
 add_action('woocommerce_checkout_before_order_review','roadcube_woocommerce_callback');
 function roadcube_woocommerce_callback(){
-    if( is_user_logged_in() ) return;
+    if( !is_user_logged_in() ) return;
     ?>
     <button type="button" id="roadcube-show-coupons" style="margin-bottom:16px;"><?php _e('Apply loyalty coupon','roadcube'); ?></button>
     <?php
