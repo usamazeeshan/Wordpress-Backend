@@ -1,5 +1,4 @@
-var $ = jQuery.noConflict()
-$(document).ready(() => {
+jQuery(document).ready(function($){
     $('#roadcube_charge_point, #roadcube_refund_point').select2()
     // redeem the coupon
     $(document).on('click','.roadcube-claim-coupon', e => {

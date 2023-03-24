@@ -78,7 +78,7 @@ function roadcube_trigger_refund_point( $order_id, $old_status, $new_status ){
     // $order = wc_get_order( $order_id );
     // $customer_id = $order->get_customer_id();
     // $email = $order->get_billing_email();
-    // $total = $order->get_total();
+    // $total = $order->get_total );
     // if( !$email || !$total ) return;
     $trans_id = get_post_meta($order_id,'roadcube_point_trans_id',true);
     $data = roadcube_checkout_cancel_transaction_call($trans_id);
