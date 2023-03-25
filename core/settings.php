@@ -8,6 +8,10 @@ if( isset($_POST['roadcube_sync_users']) ) {
     roadcube_sync_all_prev_users();
     printf('<div class="notice notice-success is-dismissible"><p>%s</p></div>',__("Users are being synced.",'roadcube'));
 }
+if( isset($_POST['roadcube_sync_products']) ) {
+    roadcube_sync_all_prev_products();
+    printf('<div class="notice notice-success is-dismissible"><p>%s</p></div>',__("Products are being synced.",'roadcube'));
+}
 ?>
 <h1><?php _e('Coupon claim settings','roadcube'); ?></h1>
 <table class="form-table">
@@ -16,6 +20,14 @@ if( isset($_POST['roadcube_sync_users']) ) {
         <td>
             <form method="post">
                 <input type="submit" value="Sync users" name="roadcube_sync_users" class="button button-primary"/>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <th><?php _e('Sync products manually','roadcube'); ?></th>
+        <td>
+            <form method="post">
+                <input type="submit" value="Sync products" name="roadcube_sync_products" class="button button-primary"/>
             </form>
         </td>
     </tr>
@@ -103,11 +115,13 @@ if( isset($_POST['roadcube_sync_users']) ) {
     <li><code>[roadcube_existing_user_register_form]</code> - <?php _e('Shortcode to show existing user registration form.','roadcube'); ?></li>
 </ol>
 <?php
+// $data = roadcube_save_product_callback(61);
 // // update_user_meta(1,'roadcube_mobile','1737008004');
 // // $countries = get_option('roadcube_country_data');
 // $claimed_coupons = get_user_meta(get_current_user_id(),'roadcube_claimed_coupons',true);
 // // $claimed_coupons = [];
 // // krsort($claimed_coupons);
-// echo '<pre>';
-// print_r(get_option('roadcube_log'));
-// echo '</pre>';
+echo '<pre>';
+print_r(get_post_meta(61,'roadcube_product_created_data',true));
+// print_r(roadcube_get_product_category());
+echo '</pre>';
