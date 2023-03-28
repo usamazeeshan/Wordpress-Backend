@@ -1,4 +1,76 @@
 <?php
+add_action('wp_ajax_roadcube_verify_phone_number','roadcube_verify_phone_number_callback');
+function roadcube_verify_phone_number_callback(){
+    if( isset($_POST['dataset']) ){
+        $token = $_POST['dataset']['verify_token'];
+        $code = $_POST['dataset']['verify_number'];
+        $curl = curl_init();
+        $api_key = Coupon_Claimer::roadcube_get_setting('api_key');
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.roadcube.io/v1/p/users/attach-mobile/verification',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode(array(
+                'email_mobile_identifier' => $token,
+                'mobile_verification_code' => $code
+            )),
+            CURLOPT_HTTPHEADER => array(
+                "X-API-TOKEN: {$api_key}",
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $output = json_decode($response,true);
+        if( isset($output['status']) && $output['status'] == 'success' ){
+            $user = get_user_by('email',$output['data']['email']);
+            if( $user ){
+                update_user_meta( $user->ID, 'roadcube_mobile', $output['data']['mobile'] );
+            }
+        }
+        curl_close($curl);
+        echo json_encode(json_decode($response,true));
+    }
+    exit;
+}
+add_action('wp_ajax_roadcube_set_phone_number','roadcube_set_phone_number_callback');
+function roadcube_set_phone_number_callback(){
+    if( isset($_POST['dataset']) ) {
+        $email = $_POST['dataset']['email'];
+        $phone = $_POST['dataset']['phone'];
+        $curl = curl_init();
+        $api_key = Coupon_Claimer::roadcube_get_setting('api_key');
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.roadcube.io/v1/p/users/attach-mobile/init',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode(array(
+                'email' => $email,
+                'mobile' => $phone
+            )),
+            CURLOPT_HTTPHEADER => array(
+                "X-API-TOKEN: {$api_key}",
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        echo json_encode(json_decode($response,true));
+    }
+    exit;
+}
 add_action('wp_ajax_send_verify_code','send_verify_code_callback');
 add_action('wp_ajax_nopriv_send_verify_code','send_verify_code_callback');
 function send_verify_code_callback(){

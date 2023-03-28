@@ -1,4 +1,101 @@
 jQuery(document).ready(function($){
+    $('#roadcube_verify_btn').on('click', function(e){
+        let verify_token = $('#roadcube_phone').attr('data-verify-token')
+        if( !verify_token ) {
+            Swal.fire({
+                icon: "warning",
+                text: "Invalid verification token."
+            })
+            return false
+        }
+        let verify_number = $('#roadcube_verify_number_input').val()
+        if( !verify_number ) {
+            Swal.fire({
+                icon: "warning",
+                text: "Verification code is required."
+            })
+            return false
+        }
+        $.ajax({
+            url: roadcube.ajax_url,
+            dataType: "json",
+            type: "POST",
+            data: {
+                action: "roadcube_verify_phone_number",
+                dataset: {verify_token, verify_number}
+            },
+            success: resp => {
+                console.log(resp)
+                if( resp.status && resp.status == "success" ) {
+                    Swal.fire({
+                        icon: "success",
+                        text: "Phone number is verified."
+                    }).then( response => {
+                        window.location.reload()
+                    })
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        text: resp.message
+                    })
+                }
+            }
+        })
+    })
+    $('#roadcube_set_phone_number').on('click', function(e){
+        let this_btn = $(this)
+        let phone = $('#roadcube_phone').val()
+        let email = $('#email').val()
+        if( !phone ) {
+            Swal.fire({
+                icon: "warning",
+                text: "Put the phone number first."
+            })
+            return false
+        }
+        if( !email ) {
+            Swal.fire({
+                icon: "warning",
+                text: "Email is required."
+            })
+            return false
+        }
+        this_btn.html('<i class="fa fa-refresh fa-spin"></i> Set phone number')
+        $.ajax({
+            url: roadcube.ajax_url,
+            dataType: "json",
+            type: "POST",
+            data: {
+                action: "roadcube_set_phone_number",
+                dataset: {phone, email}
+            },
+            success: resp => {
+                console.log(resp)
+                this_btn.html('Set phone number')
+                if( resp.status && resp.status == "success" ) {
+                    $('#roadcube_phone').attr('data-verify-token',resp.data.email_mobile_identifier)
+                    $('#roadcube_verify_number_input').show()
+                    $('#roadcube_verify_btn').show()
+                    this_btn.hide()
+                    // Swal.fire({
+                    //     icon: "success",
+                    //     text: "Phone number is set."
+                    // }).then( response => {
+                    //     window.location.reload()
+                    // })
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        text: resp.message
+                    })
+                }
+            },
+            error: err => {
+                this_btn.html('Set phone number')
+                console.log(err)
+            }
+        })
+    })
     $('#roadcube_charge_point, #roadcube_refund_point').select2()
     // redeem the coupon
     $(document).on('click','.roadcube-claim-coupon', e => {

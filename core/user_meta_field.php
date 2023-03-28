@@ -13,14 +13,19 @@ function roadcube_user_profile_fields( $user ) { ?>
     <tr>
         <th><label for="roadcube_phone"><?php _e("Roadcube phone number","roadcube"); ?></label></th>
         <td>
-            <input type="text" name="roadcube_phone" id="roadcube_phone" value="<?php echo esc_attr( get_user_meta( $user->ID, 'roadcube_mobile', true ) ); ?>" class="regular-text" /><br />
-            <span class="description"><?php _e("Please enter your roadcube phone number."); ?></span>
+            <input style="margin-bottom:8px;" type="text" placeholder="Phone number" name="roadcube_phone" id="roadcube_phone" value="<?php echo esc_attr( get_user_meta( $user->ID, 'roadcube_mobile', true ) ); ?>" class="regular-text" />
+            <?php if( !get_user_meta( $user->ID, 'roadcube_mobile', true ) ) { ?>
+                <input style="margin-bottom:8px;display:none;" type="text" placeholder="Verify code" name="roadcube_phone" id="roadcube_verify_number_input" value="" class="regular-text" />
+                <button type="button" class="button button-primary" id="roadcube_set_phone_number">Set phone number</button>
+                <button type="button" style="display:none;" class="button button-primary" id="roadcube_verify_btn">Verify phone number</button>
+            <?php } ?>
+            <!-- <span class="description"><?php _e("Please enter your roadcube phone number."); ?></span> -->
         </td>
     </tr>
     </table>
 <?php }
-add_action( 'personal_options_update', 'save_roadcube_user_profile_fields' );
-add_action( 'edit_user_profile_update', 'save_roadcube_user_profile_fields' );
+// add_action( 'personal_options_update', 'save_roadcube_user_profile_fields' );
+// add_action( 'edit_user_profile_update', 'save_roadcube_user_profile_fields' );
 
 function save_roadcube_user_profile_fields( $user_id ) {
     if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'update-user_' . $user_id ) ) {

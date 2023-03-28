@@ -237,29 +237,43 @@ function roadcube_user_coupon_claim( $user_mobile ){
     }
 }
 
-function roadcube_checkout_new_transaction_call($user, $amount){
+function roadcube_checkout_new_transaction_call($user, $amount, $order_id){
     $curl = curl_init();
     $api_key = Coupon_Claimer::roadcube_get_setting('api_key');
     $store_id = Coupon_Claimer::roadcube_get_setting('store_id');
+    $products = array();
+    $order = wc_get_order($order_id);
+    foreach( $order->get_items() as $item_id => $item ){
+        $product = $item->get_product();
+        $products[] = array(
+            'product_id' => $product->get_id(),
+            'retail_price' => $product->get_price(),
+            'quantity' => $item->get_quantity()
+        );
+    }
+    $dataset = [
+        "user" => $user
+    ];
+    $trans_type = Coupon_Claimer::roadcube_get_setting('roadcube_create_transaction_settings') ?: 'amount';
+    if( $trans_type == 'amount' ){
+        $dataset['amount'] = $amount;
+    } else {
+        $dataset['products'] = $products;
+    }
     curl_setopt_array($curl, array(
-    CURLOPT_URL => "https://api.roadcube.io/v1/p/stores/{$store_id}/transactions/new",
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'POST',
-    CURLOPT_POSTFIELDS => json_encode(
-        array(
-            'user' => $user,
-            'amount' => $amount
-        )
-    ),
-    CURLOPT_HTTPHEADER => array(
-        "X-Api-Token: {$api_key}",
-        'Content-Type: application/json'
-    ),
+        CURLOPT_URL => "https://api.roadcube.io/v1/p/stores/{$store_id}/transactions/new",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => json_encode($dataset),
+        CURLOPT_HTTPHEADER => array(
+            "X-Api-Token: {$api_key}",
+            'Content-Type: application/json'
+        ),
     ));
 
     $response = curl_exec($curl);

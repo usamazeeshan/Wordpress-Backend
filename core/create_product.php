@@ -18,9 +18,13 @@ function roadcube_sync_all_prev_products(){
     }
 }
 add_action('roadcube_synce_products','roadcube_synce_products_callback');
-function roadcube_synce_products_callback( $ids ){
+function roadcube_synce_products_callback( $product_ids ){
+    $product_log = get_option('roadcube_product_log',[]);
+    $product_log = [];
     foreach($product_ids as $product_id){
-        roadcube_save_product_callback($product_id);
+        $added_log = roadcube_save_product_callback($product_id,true);
+        $product_log[] = $added_log;
+        update_option('roadcube_product_log',$product_log);
     }
 }
 function roadcube_get_product_category(){
@@ -46,8 +50,13 @@ function roadcube_get_product_category(){
     curl_close($curl);
     $output = json_decode($response,true);
     if( isset($output['status']) && $output['status'] == 'success' ){
-        $category_id = $output['data']['products'][0]['product_category']['product_category_id'];
-        update_option('roadcube_store_cat_id',$category_id);
+        $category_id = false;
+        foreach( $output['data']['products'] as $product ) {
+            if( isset($product['product_category']) && is_array($product['product_category']) ) {
+                $category_id = $product['product_category']['product_category_id'];
+                break;
+            }
+        }
         return $category_id;
     } else {
         return false;
@@ -85,13 +94,14 @@ function roadcube_create_product( array $dataset ) {
     return json_decode($response,true);
 }
 add_action('save_post_product','roadcube_save_product_callback');
-function roadcube_save_product_callback( $product_id ){
+function roadcube_save_product_callback( $product_id, $sync = false ){
     $product = wc_get_product( $product_id );
-    $sale_price = $_POST['_sale_price'];
-    $regular_price = $_POST['_regular_price'];
-    $sku = $_POST['_sku'];
-    $title = $_POST['post_title'];
-    $des = $_POST['content'];
+    // get sale price
+    $sale_price = $sync ? $product->get_sale_price() : $_POST['_sale_price'];
+    $regular_price = $sync ? $product->get_regular_price() : $_POST['_regular_price'];
+    $sku = $sync ? $product->get_sku() : $_POST['_sku'];
+    $title = $sync ? $product->get_title() : $_POST['post_title'];
+    $des = $sync ? $product->get_description() : $_POST['content'];
     $category_id = get_option('roadcube_store_cat_id') ?: roadcube_get_product_category();
     update_option('roadcube_store_cat_id',$category_id);
     $product_data = array(
@@ -106,8 +116,8 @@ function roadcube_save_product_callback( $product_id ){
             'el' => $des,
             'it' => $des
         ),
-        'retail_price' => $regular_price,
-        'wholesale_price' => $sale_price,
+        'retail_price' => $regular_price ?: $sale_price,
+        'wholesale_price' => $sale_price ?: $regular_price,
         'product_category_id' => $category_id,
         'group_product' => false
     );
@@ -118,5 +128,7 @@ function roadcube_save_product_callback( $product_id ){
     $created_product_id = $created_product['data']['product']['product_id'];
     update_post_meta( $product_id, 'roadcube_product_id', $created_product_id );
     update_post_meta( $product_id, 'roadcube_product_created_data', $created_product );
+    $created_product['body'] = $product_data;
+    $created_product['cat_resp'] = $category_id;
     return $created_product;
 }

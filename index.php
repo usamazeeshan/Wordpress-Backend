@@ -50,8 +50,17 @@ if( !class_exists( 'Coupon_Claimer') ) {
             $version = rand(1,9).'.'.rand(0,9);
             wp_enqueue_style( 'roaddcube_select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css' );
             wp_enqueue_script( 'jquery' );
+            // enqueue swal
+            wp_enqueue_script('roadcube_swal2', '//cdn.jsdelivr.net/npm/sweetalert2@11');
             wp_enqueue_script('roadcube_select2_script', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js');
             wp_enqueue_script('roadcube_script', ROADCUBE_URL.'assets/js/script.js',array(), $version);
+            // localize ajax
+            wp_enqueue_script('roadcube_localize', ROADCUBE_URL.'assets/js/localize.js');
+            $localize_data =  array(
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'login_url' => Coupon_Claimer::roadcube_get_setting('login_page') ?: wp_login_url()
+            );
+            wp_localize_script('roadcube_localize','roadcube',$localize_data);
         }
         function roadcube_enqueue(){
             $version = rand(1,9).'.'.rand(0,9);

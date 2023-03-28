@@ -49,6 +49,15 @@ if( isset($_POST['roadcube_sync_products']) ) {
             <td><input required placeholder="<?php _e('Login redirect page','roadcube'); ?>"  type="url" value="<?php echo Coupon_Claimer::roadcube_get_setting('login_redirect'); ?>" name="login_redirect"/></td>
         </tr>
         <tr>
+            <th><?php _e('Create transaction by','roadcube'); ?></th>
+            <td>
+                <select name="roadcube_create_transaction_settings" id="">
+                    <option <?php echo Coupon_Claimer::roadcube_get_setting('roadcube_create_transaction_settings') == "amount" ? "selected" : ""; ?>  value="amount">Amount</option>
+                    <option <?php echo Coupon_Claimer::roadcube_get_setting('roadcube_create_transaction_settings') == "product" ? "selected" : ""; ?> value="product">Product</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
             <th><?php _e('Point charge on order status','roadcube'); ?></th>
             <td>
                 <select name="roadcube_point_charge_status" name="roadcube_charge_point[]" id="roadcube_charge_point" multiple="multiple">
@@ -122,6 +131,7 @@ if( isset($_POST['roadcube_sync_products']) ) {
 // // $claimed_coupons = [];
 // // krsort($claimed_coupons);
 echo '<pre>';
-print_r(get_post_meta(61,'roadcube_product_created_data',true));
+// print_r(get_post_meta(6111,'roadcube_product_created_data',true));
+print_r(get_option('roadcube_product_log',[]));
 // print_r(roadcube_get_product_category());
 echo '</pre>';

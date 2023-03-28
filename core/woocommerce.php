@@ -57,7 +57,7 @@ function roadcube_trigger_charge_point( $order_id, $old_status, $new_status ){
     $email = $order->get_billing_email();
     $total = $order->get_total();
     if( !$email || !$total ) return;
-    $data = roadcube_checkout_new_transaction_call($email, $total);
+    $data = roadcube_checkout_new_transaction_call($email, $total, $order_id);
     // get the API log
     $log = get_option('roadcube_log') ?: [];
     $log[] = $data;
