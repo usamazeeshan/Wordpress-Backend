@@ -3,7 +3,7 @@
  * 
  * Plugin Name: RoadCube
  * Author: RoadCube
- * Version: 1.0
+ * Version: 1.0.1
  * Text Domain: roadcube
  * 
  */

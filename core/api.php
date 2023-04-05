@@ -246,7 +246,7 @@ function roadcube_checkout_new_transaction_call($user, $amount, $order_id){
     foreach( $order->get_items() as $item_id => $item ){
         $product = $item->get_product();
         $products[] = array(
-            'product_id' => $product->get_id(),
+            'product_id' => get_post_meta($product->get_id(),'roadcube_product_id',true),
             'retail_price' => $product->get_price(),
             'quantity' => $item->get_quantity()
         );
@@ -276,8 +276,9 @@ function roadcube_checkout_new_transaction_call($user, $amount, $order_id){
         ),
     ));
 
-    $response = curl_exec($curl);
+    $response = json_decode(curl_exec($curl),true);
     curl_close($curl);
+    $response['request'] = $dataset;
     return json_decode($response,true);
 }
 function roadcube_checkout_cancel_transaction_call($trans_id){

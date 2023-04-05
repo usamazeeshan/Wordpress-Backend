@@ -34,7 +34,10 @@ function roadcube_verify_phone_number_callback(){
             }
         }
         curl_close($curl);
-        echo json_encode(json_decode($response,true));
+        $output = json_decode($response,true);
+        $output['token'] = $token;
+        $output['code'] = $code;
+        echo json_encode($output);
     }
     exit;
 }
@@ -64,10 +67,11 @@ function roadcube_set_phone_number_callback(){
             ),
         ));
 
-        $response = curl_exec($curl);
-
+        $response = json_decode(curl_exec($curl),true);
+        $response['email'] = $email;
+        $response['phone'] = $phone;
         curl_close($curl);
-        echo json_encode(json_decode($response,true));
+        echo json_encode($response);
     }
     exit;
 }
