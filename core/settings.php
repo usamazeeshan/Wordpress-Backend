@@ -72,13 +72,13 @@ if( isset($_POST['roadcube_sync_products']) ) {
         <tr>
             <th><?php _e('GA4 measurement ID','roadcube'); ?></th>
             <td>
-                <input type="password" name="roacube_ga4_m_id" id="roacube_ga4_m_id" value="<?php echo Coupon_Claimer::roadcube_get_setting('roacube_ga4_m_id'); ?>">
+                <input type="text" name="roacube_ga4_m_id" id="roacube_ga4_m_id" value="<?php echo Coupon_Claimer::roadcube_get_setting('roacube_ga4_m_id'); ?>">
             </td>
         </tr>
         <tr>
             <th><?php _e('GA4 measurement api secret','roadcube'); ?></th>
             <td>
-                <input type="password" name="roacube_ga4_m_api_secret" id="roacube_ga4_m_api_secret" value="<?php echo Coupon_Claimer::roadcube_get_setting('roacube_ga4_m_api_secret'); ?>">
+                <input type="text" name="roacube_ga4_m_api_secret" id="roacube_ga4_m_api_secret" value="<?php echo Coupon_Claimer::roadcube_get_setting('roacube_ga4_m_api_secret'); ?>">
             </td>
         </tr>
         <tr>

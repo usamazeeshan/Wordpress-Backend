@@ -130,6 +130,7 @@ if( !class_exists( 'Coupon_Claimer') ) {
             include(ROADCUBE_PATH.'roadcube-transaction-list/index.php');
             include(ROADCUBE_PATH.'core/woocommerce.php');
             include(ROADCUBE_PATH.'core/create_product.php');
+            include(ROADCUBE_PATH.'core/ga4.php');
         }
         function activate(){
             flush_rewrite_rules();
