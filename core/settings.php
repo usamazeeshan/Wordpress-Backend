@@ -154,9 +154,11 @@ if( isset($_POST['roadcube_sync_products']) ) {
 // $claimed_coupons = get_user_meta(get_current_user_id(),'roadcube_claimed_coupons',true);
 // // $claimed_coupons = [];
 // // krsort($claimed_coupons);
+update_option('roadcube_previous_offline_store_transactions',false);
 echo '<pre>';
 // print_r(get_post_meta(6111,'roadcube_product_created_data',true));
 // print_r(get_option('roadcube_product_log',[]));
-print_r(get_option('roadcube_log',[]));
+// print_r(get_option('roadcube_previous_offline_store_transactions',[]));
+print_r(get_option('roadcube_ga4_events',[]));
 // print_r(roadcube_get_product_category());
 echo '</pre>';
