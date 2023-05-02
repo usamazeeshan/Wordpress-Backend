@@ -32,7 +32,7 @@ function roadcube_to_ga4(){
     $offline_stores = explode(',',$store_ids);
     // pause if empty store Ids
     if( empty($offline_stores) ) return;
-    $i = 0;
+    $i = 1;
     foreach( $offline_stores as $store_id ) {
         wp_schedule_single_event(time() + 100 * $i, 'roadcube_get_trans_to_be_synced_in_ga4', array( $store_id ) );
         $i++;
@@ -109,15 +109,17 @@ function roadcube_get_trans_to_be_synced( $store_id ){
         // initialize the checked transaction id holder
         $checked_trans = [];
         foreach($transactions as $transaction) {
-            $checked_trans[] = $transaction['transaction_id'];
+            $transaction_id = $transaction['transaction_id'];
+            $user_mobile = $transaction['user']['mobile'];
+            $checked_trans[] = $transaction_id;
             if( in_array($transaction['transaction_id'],$trans_id_of_this_store) ) continue;
             $ga4_events[] = [
                 "name" => "purchase",
                 "params" => [
-                    "transaction_id" => $transaction['transaction_id'],
+                    "transaction_id" => $transaction_id,
                     "store_id" => $store_id,
                     "store_name" => $transaction['store']['name'],
-                    "user_mobile" => $transaction['user']['mobile'],
+                    "user_mobile" => $user_mobile,
                     "total" => $transaction['total_price']
                 ]
             ];
@@ -126,14 +128,15 @@ function roadcube_get_trans_to_be_synced( $store_id ){
         $prev_trans[$store_id] = $checked_trans;
         update_option('roadcube_previous_offline_store_transactions',$prev_trans);
     }
-    $j = 0;
+    $j = 1;
+    if( empty($ga4_events) ) return;
     foreach(array_chunk($ga4_events,25) as $event_chunk){
         $dataset['events'] = $event_chunk;
-        wp_schedule_single_event(time() + 100 * $i, 'roadcube_sync_trans_to_ga4', array( $m_secret, $m_id, $dataset ) );
+        wp_schedule_single_event(time() + 100 * $j, 'roadcube_sync_trans_to_ga4', array( $m_secret, $m_id, $dataset ) );
         $j++;
     }
 }
-add_action('roadcube_sync_trans_to_ga4','roadcube_sync_trans_to_ga4_callback');
-function roadcube_sync_trans_to_ga4_callback( $m_secret, $m_id, $dataset ){
+add_action('roadcube_sync_trans_to_ga4','roadcube_sync_trans_to_ga4_as_purchase_callback',10,3);
+function roadcube_sync_trans_to_ga4_as_purchase_callback( $m_secret, $m_id, $dataset ){
     roadcube_post_to_ga4( $m_secret, $m_id, $dataset );
 }
