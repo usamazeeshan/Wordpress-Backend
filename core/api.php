@@ -279,7 +279,8 @@ function roadcube_checkout_new_transaction_call($user, $amount, $order_id){
     $response = json_decode(curl_exec($curl),true);
     curl_close($curl);
     $response['request'] = $dataset;
-    return json_decode($response,true);
+    update_option('roadcube_trans_create_log',$response);
+    return $response;
 }
 function roadcube_checkout_cancel_transaction_call($trans_id){
     $curl = curl_init();
@@ -354,7 +355,8 @@ function roadcube_create_user_by_email($email){
         'email'     => $email,
         'gender'    => 'male',
         'password'  => $password,
-        'password_confirmation' => $password
+        'password_confirmation' => $password,
+        'birthday'  => '1999-12-30'
     );
     curl_setopt_array($curl, array(
         CURLOPT_URL => "https://api.roadcube.io/v1/p/users/registration/email",

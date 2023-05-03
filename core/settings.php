@@ -155,10 +155,11 @@ if( isset($_POST['roadcube_sync_products']) ) {
 // // $claimed_coupons = [];
 // // krsort($claimed_coupons);
 // update_option('roadcube_previous_offline_store_transactions',false);
+$roadcube_debug_mode = false;
+if( !$roadcube_debug_mode ) return;
 echo '<pre>';
-// print_r(get_post_meta(6111,'roadcube_product_created_data',true));
-// print_r(get_option('roadcube_product_log',[]));
-// print_r(get_option('roadcube_previous_offline_store_transactions',[]));
-// print_r(get_option('roadcube_ga4_events',[]));
-// print_r(roadcube_get_product_category());
+echo '<h1>Create transaction log:</h1>';
+print_r(get_option('roadcube_trans_create_log'));
+echo '<h1>User sync log log:</h1>';
+print_r(get_option('roadcube_user_sync_log'));
 echo '</pre>';

@@ -185,6 +185,8 @@ function roadcube_sync_all_prev_users(){
 add_action('roadcube_synce_users','roadcube_synce_users_callback');
 function roadcube_synce_users_callback( $emails ){
     foreach($emails as $email){
-        roadcube_create_user_by_email($email);
+        $user_sync_log = [];
+        $user_sync_log[] = roadcube_create_user_by_email($email);
+        update_option('roadcube_user_sync_log',$user_sync_log);
     }
 }
