@@ -91,3 +91,12 @@ function roadcube_trigger_refund_point( $order_id, $old_status, $new_status ){
     // print_r($data);
     // echo '</pre>';
 }
+add_action( 'woocommerce_before_shop_loop_item_title', 'bbloomer_new_badge_shop_page', 3 );
+function bbloomer_new_badge_shop_page() {
+    global $product;
+    $product_id = $product->get_id();
+    $product_data = get_post_meta($product_id,'roadcube_product_created_data',true);
+    if( isset($product_data['status']) && $product_data['status'] == 'success' ) {
+        echo '<span class="onsale" style="position: absolute;top: 8px;left: 8px;background: white;">' . $product_data['data']['product']['reward_points']  .' '. esc_html__( 'points', 'woocommerce' ) . '</span>';
+    }
+}
