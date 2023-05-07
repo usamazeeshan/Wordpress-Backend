@@ -113,14 +113,15 @@ function roadcube_get_trans_to_be_synced( $store_id ){
             $user_mobile = $transaction['user']['mobile'];
             $checked_trans[] = $transaction_id;
             if( in_array($transaction['transaction_id'],$trans_id_of_this_store) ) continue;
+            $event_name = $transaction['total_price'] < 0 ? "roadcube_refund" : "roadcube_offline_purchase";
             $ga4_events[] = [
-                "name" => "purchase",
+                "name" => $event_name,
                 "params" => [
                     "transaction_id" => $transaction_id,
                     "store_id" => $store_id,
                     "store_name" => $transaction['store']['name'],
                     "user_mobile" => $user_mobile,
-                    "total" => $transaction['total_price']
+                    "value" => abs( $transaction['total_price'] )
                 ]
             ];
         }
