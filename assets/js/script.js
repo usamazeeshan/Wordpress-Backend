@@ -96,7 +96,9 @@ jQuery(document).ready(function($){
             }
         })
     })
-    $('#roadcube_charge_point, #roadcube_refund_point').select2()
+    if(  $('#roadcube_charge_point, #roadcube_refund_point').length > 0 ) {
+        $('#roadcube_charge_point, #roadcube_refund_point').select2()
+    }
     // redeem the coupon
     $(document).on('click','.roadcube-claim-coupon', e => {
         let this_el = $(e.currentTarget)
