@@ -146,6 +146,7 @@ if( isset($_POST['roadcube_sync_products']) ) {
     <li><code>[roadcube_show_gifts]</code> - <?php _e('Shortcode to show gifts.','roadcube'); ?></li>
     <li><code>[roadcube_get_user_points]</code> - <?php _e('Shortcode to show user points.','roadcube'); ?></li>
     <li><code>[roadcube_existing_user_register_form]</code> - <?php _e('Shortcode to show existing user registration form.','roadcube'); ?></li>
+    <li><code>[roadcube_verify_phone_shortcode]</code> - <?php _e('Shortcode to assign and verifiy phone number of already registered user.','roadcube'); ?></li>
 </ol>
 <?php
 $product_log = get_option('roadcube_product_log');
