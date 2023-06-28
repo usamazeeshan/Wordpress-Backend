@@ -46,26 +46,29 @@ function roadcube_wp_insert_user($user_id, $user_data){
     update_option('roadcube_user_sync_log',$user_sync_log);
 }
 
-/*add_shortcode( 'roadcube_verify_phone_shortcode', 'roadcube_verify_phone_shortcode_callback' );
-function roadcube_verify_phone_shortcode_callback( $user ) { ?>
+add_shortcode( 'roadcube_verify_phone_shortcode', 'roadcube_verify_phone_shortcode_callback' );
+function roadcube_verify_phone_shortcode_callback() { ?>
     <?php
     ob_start();
+    $user_id = get_current_user_id();
+    $user = get_userdata($user_id);
     ?>
     <h3><?php _e("RoadCube registered phone number", "blank"); ?></h3>
     <table class="form-table">
-    <tr>
-        <th><label for="roadcube_phone"><?php _e("Roadcube phone number","roadcube"); ?></label></th>
-        <td>
-            <input style="margin-bottom:8px;" type="text" placeholder="Phone number" name="roadcube_phone" id="roadcube_phone" value="<?php echo esc_attr( get_user_meta( $user->ID, 'roadcube_mobile', true ) ); ?>" class="regular-text" />
-            <?php if( !get_user_meta( $user->ID, 'roadcube_mobile', true ) ) { ?>
-                <input style="margin-bottom:8px;display:none;" type="text" placeholder="Verify code" name="roadcube_phone" id="roadcube_verify_number_input" value="" class="regular-text" />
-                <button type="button" class="button button-primary" id="roadcube_set_phone_number">Set phone number</button>
-                <button type="button" style="display:none;" class="button button-primary" id="roadcube_verify_btn">Verify phone number</button>
-            <?php } ?>
-            <!-- <span class="description"><?php _e("Please enter your roadcube phone number."); ?></span> -->
-        </td>
-    </tr>
+        <tr>
+            <th><label for="roadcube_phone"><?php _e("Roadcube phone number","roadcube"); ?></label></th>
+            <td>
+                <input type="hidden" name="" value="<?php echo $user->user_email; ?>" id="email">
+                <input style="margin-bottom:8px;" type="text" placeholder="Phone number" name="roadcube_phone" id="roadcube_phone" value="<?php echo esc_attr( get_user_meta( $user->ID, 'roadcube_mobile', true ) ); ?>" class="regular-text" />
+                <?php if( !get_user_meta( $user->ID, 'roadcube_mobile', true ) ) { ?>
+                    <input style="margin-bottom:8px;display:none;" type="text" placeholder="Verify code" name="roadcube_phone" id="roadcube_verify_number_input" value="" class="regular-text" />
+                    <button type="button" class="button button-primary" id="roadcube_set_phone_number">Set phone number</button>
+                    <button type="button" style="display:none;" class="button button-primary" id="roadcube_verify_btn">Verify phone number</button>
+                <?php } ?>
+                <!-- <span class="description"><?php _e("Please enter your roadcube phone number."); ?></span> -->
+            </td>
+        </tr>
     </table>
-<?php 
+    <?php 
     return ob_get_clean();
-}*/
+}
