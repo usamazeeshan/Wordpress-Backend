@@ -148,7 +148,8 @@ if( isset($_POST['roadcube_sync_products']) ) {
     <li><code>[roadcube_existing_user_register_form]</code> - <?php _e('Shortcode to show existing user registration form.','roadcube'); ?></li>
 </ol>
 <?php
-// $data = roadcube_save_product_callback(61);
+$product_log = get_option('roadcube_product_log');
+$roadcube_category_log = get_option('roadcube_category_log');
 // // update_user_meta(1,'roadcube_mobile','1737008004');
 // // $countries = get_option('roadcube_country_data');
 // $claimed_coupons = get_user_meta(get_current_user_id(),'roadcube_claimed_coupons',true);
@@ -158,6 +159,10 @@ if( isset($_POST['roadcube_sync_products']) ) {
 $roadcube_debug_mode = false;
 if( !$roadcube_debug_mode ) return;
 echo '<pre>';
+echo '<h1>Category sync sync:</h1>';
+print_r($roadcube_category_log);
+echo '<h1>Product sync:</h1>';
+print_r($product_log);
 echo '<h1>Create transaction log:</h1>';
 print_r(get_option('roadcube_trans_create_log'));
 echo '<h1>User sync log log:</h1>';

@@ -49,6 +49,7 @@ function roadcube_get_product_category(){
 
     curl_close($curl);
     $output = json_decode($response,true);
+    update_option('roadcube_category_log',$output);
     if( isset($output['status']) && $output['status'] == 'success' ){
         $category_id = false;
         foreach( $output['data']['products'] as $product ) {
@@ -112,9 +113,9 @@ function roadcube_save_product_callback( $product_id, $sync = false ){
             'el' => $title
         ),
         'description' => array(
-            'en' => $des,
-            'el' => $des,
-            'it' => $des
+            'en' => $title,
+            'el' => $title,
+            'it' => $title
         ),
         'retail_price' => $regular_price ?: $sale_price,
         'wholesale_price' => $sale_price ?: $regular_price,
