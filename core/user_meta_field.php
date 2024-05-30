@@ -1,4 +1,5 @@
 <?php
+
 add_action( 'show_user_profile', 'roadcube_user_profile_fields' );
 add_action( 'edit_user_profile', 'roadcube_user_profile_fields' );
 

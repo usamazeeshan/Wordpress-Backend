@@ -1,5 +1,26 @@
 <?php
+if ( is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
+    // woocommerce is active
+} else {
+    // woocommerce is not active
+    function wc_get_order_statuses() {
+	$order_statuses = array(
+		'wc-pending'    => _x( 'Pending payment', 'Order status', 'woocommerce' ),
+		'wc-processing' => _x( 'Processing', 'Order status', 'woocommerce' ),
+		'wc-on-hold'    => _x( 'On hold', 'Order status', 'woocommerce' ),
+		'wc-completed'  => _x( 'Completed', 'Order status', 'woocommerce' ),
+		'wc-cancelled'  => _x( 'Cancelled', 'Order status', 'woocommerce' ),
+		'wc-refunded'   => _x( 'Refunded', 'Order status', 'woocommerce' ),
+		'wc-failed'     => _x( 'Failed', 'Order status', 'woocommerce' ),
+	);
+	return apply_filters( 'wc_order_statuses', $order_statuses );
+}
+}
+
 if(isset($_POST['save_settings'])){
+    // echo '<pre>';
+    // print_r($_POST);
+    // echo '</pre>';
     update_option('roadcube_settings',$_POST);
     roadcube_get_countries();
     printf('<div class="notice notice-success is-dismissible"><p>%s</p></div>',__("Save settings",'roadcube'));
@@ -8,10 +29,17 @@ if( isset($_POST['roadcube_sync_users']) ) {
     roadcube_sync_all_prev_users();
     printf('<div class="notice notice-success is-dismissible"><p>%s</p></div>',__("Users are being synced.",'roadcube'));
 }
+
 if( isset($_POST['roadcube_sync_products']) ) {
     roadcube_sync_all_prev_products();
     printf('<div class="notice notice-success is-dismissible"><p>%s</p></div>',__("Products are being synced.",'roadcube'));
 }
+
+if(isset($_POST['roadcube_sync_products_points'])){
+	roadcube_sync_all_product_points();
+	printf('<div class="notice notice-success is-dismissible"><p>%s</p></div>',__("Products points are being synced.",'roadcube'));
+}
+
 ?>
 <h1><?php _e('Coupon claim settings','roadcube'); ?></h1>
 <table class="form-table">
@@ -31,6 +59,15 @@ if( isset($_POST['roadcube_sync_products']) ) {
             </form>
         </td>
     </tr>
+	
+	<tr>
+        <th><?php _e('Sync product points','roadcube'); ?></th>
+        <td>
+            <form method="post">
+                <input type="submit" value="Sync products points" name="roadcube_sync_products_points" class="button button-primary"/>
+            </form>
+        </td>
+    </tr>
     <form method="post">
         <tr>
             <th><?php _e('API Key','roadcube'); ?></th>
@@ -40,9 +77,35 @@ if( isset($_POST['roadcube_sync_products']) ) {
             <th><?php _e('Store ID','roadcube'); ?></th>
             <td><input required placeholder="<?php _e('Store ID','roadcube'); ?>" type="text" value="<?php echo Coupon_Claimer::roadcube_get_setting('store_id'); ?>" name="store_id"/></td>
         </tr>
+        <tr style="display:none">
+            <th><?php _e('Product Category ID','roadcube'); ?></th>
+<!--             <td><input required placeholder="<?php _e('Product Category ID','roadcube'); ?>" type="text" value="<?php echo Coupon_Claimer::roadcube_get_setting('product_category_id'); ?>" name="product_category_id" /></td> -->
+        </tr>
         <tr>
             <th><?php _e('Login page URL','roadcube'); ?></th>
             <td><input required placeholder="<?php _e('Login page URL','roadcube'); ?>"  type="url" value="<?php echo Coupon_Claimer::roadcube_get_setting('login_page'); ?>" name="login_page"/></td>
+        </tr>
+        <tr>
+            <th><?php _e('Show points for products','roadcube'); ?></th>
+            <td>
+                <?php
+                $checked = Coupon_Claimer::roadcube_get_setting('roadcube_enable_point') ? 'checked' : '';
+                ?>
+                <label for="roadcube_enable_point">
+                    <input <?php echo $checked; ?> type="checkbox" name="roadcube_enable_point" id="roadcube_enable_point">
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <th><?php _e('Multiply point with price','roadcube'); ?></th>
+            <td>
+                <?php
+                $checked = Coupon_Claimer::roadcube_get_setting('roadcube_point_mul_price') ? 'checked' : '';
+                ?>
+                <label for="roadcube_point_mul_price">
+                    <input <?php echo $checked; ?> type="checkbox" name="roadcube_point_mul_price" id="roadcube_point_mul_price">
+                </label>
+            </td>
         </tr>
         <tr>
             <th><?php _e('Login redirect page','roadcube'); ?></th>
@@ -82,7 +145,7 @@ if( isset($_POST['roadcube_sync_products']) ) {
             </td>
         </tr>
         <tr>
-            <th><?php _e('Point charge on order status','roadcube'); ?></th>
+            <th class="dynamic-fields"><?php _e('Point charge on order status','roadcube'); ?></th>
             <td>
                 <select name="roadcube_point_charge_status" name="roadcube_charge_point[]" id="roadcube_charge_point" multiple="multiple">
                     <?php
@@ -109,7 +172,7 @@ if( isset($_POST['roadcube_sync_products']) ) {
             </td>
         </tr>
         <tr>
-            <th><?php _e('Point refund on order status','roadcube'); ?></th>
+            <th class="dynamic-fields"><?php _e('Point refund on order status','roadcube'); ?></th>
             <td>
                 <select name="roadcube_point_refund_status" name="roadcube_refund_point[]" id="roadcube_refund_point" multiple="multiple">
                     <?php

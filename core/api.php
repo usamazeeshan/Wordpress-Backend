@@ -7,8 +7,8 @@ function roadcube_get_countries(){
         CURLOPT_URL => "https://api.roadcube.io/v1/p/countries?phone_code=00880",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
+        CURLOPT_MAXREDIRS => 1000,
+        CURLOPT_TIMEOUT => 3000,
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => "GET",
         CURLOPT_HTTPHEADER => array(
@@ -236,30 +236,31 @@ function roadcube_user_coupon_claim( $user_mobile ){
         return $data;
     }
 }
-
 function roadcube_checkout_new_transaction_call($user, $amount, $order_id){
+	
     $curl = curl_init();
     $api_key = Coupon_Claimer::roadcube_get_setting('api_key');
     $store_id = Coupon_Claimer::roadcube_get_setting('store_id');
     $products = array();
     $order = wc_get_order($order_id);
-    foreach( $order->get_items() as $item_id => $item ){
-        $product = $item->get_product();
-        $products[] = array(
-            'product_id' => get_post_meta($product->get_id(),'roadcube_product_id',true),
-            'retail_price' => $product->get_price(),
-            'quantity' => $item->get_quantity()
-        );
-    }
-    $dataset = [
-        "user" => $user
-    ];
+foreach ($order->get_items() as $item_id => $item) {
+    $product = $item->get_product();
+    $products[] = array(
+        'product_id' => get_post_meta($product->get_id(), 'roadcube_product_id', true),
+        'retail_price' => $product->get_price(),
+        'quantity' => $item->get_quantity()
+    );
+}
+
     $trans_type = Coupon_Claimer::roadcube_get_setting('roadcube_create_transaction_settings') ?: 'amount';
+	$trans_types = Coupon_Claimer::roadcube_get_setting('roadcube_create_transaction_settings') ?: 'product';
+	
     if( $trans_type == 'amount' ){
         $dataset['amount'] = $amount;
-    } else {
+    }elseif($trans_types == 'product') {
         $dataset['products'] = $products;
-    }
+		
+    };
     curl_setopt_array($curl, array(
         CURLOPT_URL => "https://api.roadcube.io/v1/p/stores/{$store_id}/transactions/new",
         CURLOPT_RETURNTRANSFER => true,
@@ -281,7 +282,7 @@ function roadcube_checkout_new_transaction_call($user, $amount, $order_id){
     $response['request'] = $dataset;
     update_option('roadcube_trans_create_log',$response);
     return $response;
-}
+} 
 function roadcube_checkout_cancel_transaction_call($trans_id){
     $curl = curl_init();
     $api_key = Coupon_Claimer::roadcube_get_setting('api_key');
@@ -382,6 +383,7 @@ function roadcube_create_user_by_email($email){
         return ['status' => 'error', 'message' => "cURL Error #:" . $err];
     } else {
         $data = json_decode( $response, true);
+		
         return $data;
     }
 }

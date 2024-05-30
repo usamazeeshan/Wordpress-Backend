@@ -272,12 +272,14 @@ jQuery(document).ready(function($){
                 dataset: dataset
             },
             success: resp => {
+				console.log(resp);
                 if( resp.status && resp.status == "error" ) {
                     Swal.fire({
                         icon: "error",
                         text: resp.message
                     })
                 } else if ( resp.status && resp.status == "success" ) {
+					console.log('aaaa');
                     let all_gifts = ''
                     for( let i = 0; i < resp.data.coupons.length; i++ ) {
                         let gift_data = resp.data.coupons[i]
@@ -318,6 +320,7 @@ jQuery(document).ready(function($){
                 this_el.html(this_el_html)
             },
             error: err => {
+				console.log('bbbb');
                 console.log(err)
                 this_el.html(this_el_html)
             }
@@ -449,3 +452,4 @@ jQuery(document).ready(function($){
         console.log('clicked')
     })
 })
+

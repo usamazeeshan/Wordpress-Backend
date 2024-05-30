@@ -2,10 +2,16 @@
 function roadcube_get_the_trans( $page = 1 ){
     $curl = curl_init();
     $roadcube_settings = get_option('roadcube_settings');
-    $api_key = isset($roadcube_settings['api_key']) ? $roadcube_settings['api_key'] : "vchglllp-aw22-000c-nvp4-max823mvlpg8";
+    //$api_key = isset($roadcube_settings['api_key']) ? $roadcube_settings['api_key'] : "vchglllp-aw22-000c-nvp4-max823mvlpg8";
+    $api_key = isset($roadcube_settings['api_key']) ? $roadcube_settings['api_key'] : "mviesto8-aade-15hp-9h59-gvkz4dxlvb96";
+    
+    
     $data = json_encode(array(
         'user' => get_user_meta( get_current_user_id(), 'roadcube_mobile', true )
     ));
+	
+	var_dump($data);
+	
     curl_setopt_array($curl, array(
       CURLOPT_URL => "https://api.roadcube.io/v1/p/users/transactions/?page={$page}",
       CURLOPT_RETURNTRANSFER => true,
@@ -26,5 +32,7 @@ function roadcube_get_the_trans( $page = 1 ){
     
     curl_close($curl);
     $output = json_decode($response,true);
+	var_dump($output);
     return $output;
+	
 }

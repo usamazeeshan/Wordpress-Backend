@@ -1,5 +1,5 @@
 jQuery(document).ready(function($){
-    let coupon_popup
+    let coupon_popup;
     $('#roadcube-show-coupons').on('click',function(e){
         e.preventDefault()
         coupon_popup = Swal.fire({
